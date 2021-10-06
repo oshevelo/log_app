@@ -1,0 +1,81 @@
+Ubuntu:
+-Install pip3, DB:
+    sudo apt-get update
+    sudo apt-get -y install python3-pip
+    sudo apt-get install --reinstall libpq-dev
+    pip install psycopg2
+-Install Django:
+    sudo pip3 install django==3.2
+-Package install:
+    pip3 install -r requirements.txt
+
+-DB:
+    python3 manage.py migrate
+    python3 manage.py migrate jet
+    python3 manage.py createsuperuser (Ex: max max@max.com 1106)
+
+Start local server:
+    python3 manage.py runserver
+
+DB:
+    from app import db
+    from message_persistence_service import db
+    db.create_all()
+    db.drop_all()
+
+    from message_persistence_service import Events
+    data = Events('uid_test', 'Message text')
+    db.session.add(data)
+    db.session.commit()
+
+Events.query.all()
+    db.session.delete(Events.query.filter_by(id=1).first())
+
+Migrations:
+    python message_persistence_service.py db init
+    python message_persistence_service.py db migrate
+    python message_persistence_service.py db upgrade
+    python message_persistence_service.py db --help
+
+     python3 manage.py makemigrations polls
+     python3 manage.py migrate
+
+     p3 m.py sqlmigrate polls 0001
+     python manage.py shell - add fields in DB manual
+
+Start test:
+    pytest test_main.py -s
+
+JET:
+    https://pypi.org/project/django-3-jet/
+    Doc: https://docs.djangoproject.com/en/3.2/intro/tutorial07/
+    python3 manage.py migrate jet
+
+Rest:
+    Install 'rest_framework':
+        pip install djangorestframework
+        pip install markdown       # Markdown support for the browsable API.
+        pip install django-filter  # Filtering support
+
+        http://127.0.0.1:8000/polls/question/
+
+             python3 manage.py makemigrations polls
+             python3 manage.py migrate
+
+        https://www.django-rest-framework.org/tutorial/quickstart/
+        https://www.django-rest-framework.org/api-guide/generic-views/#generic-views
+        https://www.django-rest-framework.org/tutorial/1-serialization/
+
+Postgres:
+    sudo apt-get install --reinstall libpq-dev
+    pip install psycopg2
+
+    DB console:
+        sudo -u postgres psql
+        create user test_admin with password 'admin1234';
+        create database log_app owner test_admin;
+python3 manage.py migrate
+sudo apt install adminer
+
+Additional commands:
+    python3 manage.py startapp messenger
