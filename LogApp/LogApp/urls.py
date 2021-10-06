@@ -17,11 +17,9 @@ from xml.etree.ElementInclude import include
 
 from django.contrib import admin
 from django.urls import include, path
-from messenger import views
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
-    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('chat/', include('messenger.urls')),
+    path('messenger/', include('messenger.urls')),
 ]
