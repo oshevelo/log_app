@@ -23,7 +23,7 @@
 
 
 ### Schema
-![Image alt](https://github.com/oshevelo/log_app/blob/master/scheme.webp)
+![Image alt](https://github.com/oshevelo/log_app/blob/main/scheme.webp)
 
 ### Plan
 - [ ] Authentication (JWT/Cookie) + Face ID
