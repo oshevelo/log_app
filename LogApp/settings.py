@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'jet',
     'messenger.apps.MessengerConfig',
+    'Points.apps.PointsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'LogApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, '')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,15 +77,22 @@ WSGI_APPLICATION = 'LogApp.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': { 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-        'NAME': '', 
-        'USER': '', 
-        'PASSWORD': '', 
-        'HOST': 'localhost', 
-        'PORT': 5432, 
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'stasyan_db',
+#         'USER': 'stasyan',
+#         'PASSWORD': '123456',
+#         'HOST': 'localhost',
+#         'PORT': 5432,
+#     }
+# }
 
 
 # Password validation

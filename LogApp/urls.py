@@ -16,10 +16,11 @@ Including another URLconf
 from xml.etree.ElementInclude import include
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path, include
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
+    path('Points/', include("Points.urls")),
     path('messenger/', include('messenger.urls')),
 ]
