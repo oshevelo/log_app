@@ -1,3 +1,5 @@
+**** You can add your tips (hints) here ****
+
 Ubuntu:
 -Install pip3, DB:
     sudo apt-get update
@@ -17,32 +19,6 @@ Ubuntu:
 Start local server:
     python3 manage.py runserver
 
-DB:
-    from app import db
-    from message_persistence_service import db
-    db.create_all()
-    db.drop_all()
-
-    from message_persistence_service import Events
-    data = Events('uid_test', 'Message text')
-    db.session.add(data)
-    db.session.commit()
-
-Events.query.all()
-    db.session.delete(Events.query.filter_by(id=1).first())
-
-Migrations:
-    python message_persistence_service.py db init
-    python message_persistence_service.py db migrate
-    python message_persistence_service.py db upgrade
-    python message_persistence_service.py db --help
-
-     python3 manage.py makemigrations polls
-     python3 manage.py migrate
-
-     p3 m.py sqlmigrate polls 0001
-     python manage.py shell - add fields in DB manual
-
 Start test:
     pytest test_main.py -s
 
@@ -59,7 +35,7 @@ Rest:
 
         http://127.0.0.1:8000/polls/question/
 
-             python3 manage.py makemigrations polls
+             python3 manage.py makemigrations
              python3 manage.py migrate
 
         https://www.django-rest-framework.org/tutorial/quickstart/
@@ -74,8 +50,8 @@ Postgres:
         sudo -u postgres psql
         create user test_admin with password 'admin1234';
         create database log_app owner test_admin;
-python3 manage.py migrate
-sudo apt install adminer
+
+    python3 manage.py migrate
 
 Additional commands:
-    python3 manage.py startapp messenger
+    python3 manage.py startapp messenger - Add new module

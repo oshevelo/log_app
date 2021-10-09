@@ -1,29 +1,26 @@
-import datetime
-
-from django.db import models
-from django.utils import timezone
+from django.contrib.auth.models import User
+from django.db.models import Model, TextField, DateTimeField, ForeignKey, CASCADE
 
 
-class Room(models.Model):
-    room_text = models.CharField(max_length=12)
-    pub_date = models.DateTimeField('date published')
-    description = models.TextField(max_length=2000)
-
-    def __str__(self):
-        return self.room_text
-
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-
-    was_published_recently.admin_order_field = 'pub_date'
-    was_published_recently.boolean = True
-    was_published_recently.short_description = 'Published recently?'
-
-
-class Message(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    message_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
+class MessageModel(Model):
+    user = ForeignKey(User, on_delete=CASCADE, verbose_name='user', related_name='from_user', db_index=True)
+    recipient = ForeignKey(User, on_delete=CASCADE, verbose_name='recipient', related_name='to_user', db_index=True)
+    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False, db_index=True)
+    body = TextField('body', max_length=20000)
 
     def __str__(self):
-        return self.message_text
+        return str(self.id)
+
+    def characters(self):
+        # Toy function to count body characters.
+        # :return: body's char number
+        return len(self.body)
+
+    def save(self, *args, **kwargs):
+        self.body = self.body.strip()  # Trimming whitespaces from the body
+        super(MessageModel, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'message'
+        verbose_name_plural = 'messages'
+        ordering = ('-timestamp',)
