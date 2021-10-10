@@ -11,13 +11,8 @@ class MessageModel(Model):
     def __str__(self):
         return str(self.id)
 
-    def characters(self):
-        # Toy function to count body characters.
-        # :return: body's char number
-        return len(self.body)
-
     def save(self, *args, **kwargs):
-        self.body = self.body.strip()  # Trimming whitespaces from the body
+        self.body = self.body.strip()
         super(MessageModel, self).save(*args, **kwargs)
 
     class Meta:
