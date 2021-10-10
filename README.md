@@ -1,25 +1,25 @@
 # LogApp
 
-Сервис Logistics LogApp от компании Hillel, разработчика системы мониторинга, создан специально для дистрибьюторских компаний и служб доставки.
+The Logistics LogApp service from Hillel, a developer of monitoring systems, is designed specifically for distribution companies and delivery services.
 
-Новое приложение для управления заявками используется в связке с веб-версией LogApp и предназначено для водителей и курьеров, которые занимаются развозом товаров по торговой сети или клиентам.
+The new request management application is used in conjunction with the web version of LogApp and is designed for drivers and couriers who deliver goods to retailers or customers.
 
-После установки LogApp Web/Mobile становится точкой соприкосновения мобильных сотрудников и диспетчеров.
+Once installed, LogApp Web/Mobile becomes the point of contact for mobile workers and dispatchers.
 
-Начать просто: создайте водителя в системе LogApp с указанием номера телефона и email, назначьте водителя на объект и авторизуйтесь в приложении по номеру телефона водителя.
+It's easy to get started: create a driver in LogApp with a phone number and email, assign a driver to a facility, and log in to the app with the driver's phone number.
 
-Попробуйте сейчас и получите поддержку на всех стадиях выполнения заявки:
+Try it now and get support through every stage of the job:
 
-- просмотр списка назначенных заявок c подробной информацией по каждой из них;
-- отслеживание и контроль выполнения заявок;
-- отображение на карте заявок и предполагаемого маршрута движения;
-- получение всплывающих уведомлений о маршрутах, заявках и ходе доставки;
-- маршрутизация посредством сторонних навигационных программ;
-- подтверждение факта доставки товара c возможностью оставить комментарии и приложить фотографию с подписью клиента, датой и временем доставки;
-- связь с диспетчером для сообщения о возможных проблемах, связанных с выполнением заявки.
-- оптимизация под планшеты для одновременного просмотра заявок в таблицах и на карте;
-- возможность использовать мобильное устройство в качестве трекера.
-- и, самое главное, связаться со службой поддержки или клиентом через чат
+- View a list of assigned jobs with detailed information for each job;
+- Tracking and follow-up of requests;
+- Display on the map of requests and proposed route;
+- receiving pop-up notifications about routes, requests and delivery progress;
+- routing through third-party navigation software;
+- confirmation of the fact of delivery, with the ability to leave comments and attach a photo with the client's signature, date and time of delivery;
+- communication with the dispatcher to report possible problems related to the execution of the request.
+- optimization for tablets for simultaneous viewing of requests in tables and on the map;
+- the ability to use your mobile device as a tracker.
+- and, most importantly, to contact support or customer service via chat
 
 
 ### Schema
