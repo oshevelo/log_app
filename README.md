@@ -27,6 +27,11 @@ Try it now and get support through every stage of the job:
 
 ### Plan
 - [ ] Authentication (JWT/Cookie) + Face ID
+- [ ] Points
+- [ ] Routes
+- [ ] Orders
+- [ ] Scheduler
+- [ ] Notifications
 - [ ] Messenger (chat)
 
 
