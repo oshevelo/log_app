@@ -1,4 +1,4 @@
 from django.apps import AppConfig
 
 class PointsConfig(AppConfig):
-    name = 'Points'
+    name = 'points'
