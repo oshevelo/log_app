@@ -4,34 +4,49 @@ from django.contrib.auth.models import User
 
 class Order(models.Model):
 
-    STATUS_CHOICES = [
-        ('inactive', 'inactive order'),
-        ('active', 'order in progress'),
-        ('complete', 'order delivered')
-    ]
+    class Status:
 
-    PAYMENT_CHOICES = [
-        ('cash', 'cash payment'),
-        ('cashless', 'cashless payment')
+        active = 1
+        done = 2
+        canceled = 3
+
+    STATUS_CHOICES = [
+        (Status.active, 'order in progress'),
+        (Status.done, 'order delivered'),
+        (Status.canceled, 'order canceled')
     ]
     # General info.
-    status = models.CharField(
-        max_length=50, choices=STATUS_CHOICES, default=STATUS_CHOICES.inactive
+    status = models.PositiveSmallIntegerField(
+        choices=STATUS_CHOICES, default=Status.active
     )
-    products = models.ManyToManyField('products.Product')
-    description = models.CharField(max_length=500, blank=True)
+    description = models.TextField(max_length=2500, blank=True)
     # Participants info.
-    sender = models.ForeignKey(User, on_delete=models.SET_NULL)
-    courier = models.ForeignKey(User, on_delete=models.SET_NULL)
-    receiver = models.ForeignKey(User, on_delete=models.SET_NULL)
-    vehicle = models.ForeignKey('vehicles.Vehicle', on_delete=models.SET_NULL)
+    # sender = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # courier = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # receiver = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # vehicle = models.ForeignKey(
+    #     'vehicles.Vehicle', null=True, on_delete=models.SET_NULL
+    # )
     # Delivery time info.
-    added = models.DateTimeField(auto_now_add=True)
-    delivery_time = models.DurationField()
-    delivered = models.DateTimeField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    delivered_on = models.DateTimeField()
     # Route info.
-    start_point = models.ForeignKey('points.Point', on_delete=models.SET_NULL)
-    finish_point = models.ForeignKey('points.Point', on_delete=models.SET_NULL)
+    # start_point = models.ForeignKey(
+    #     'points.Point', null=True, on_delete=models.SET_NULL
+    # )
+    # finish_point = models.ForeignKey(
+    #     'points.Point', null=True, on_delete=models.SET_NULL
+    # )
     # Payment info.
-    total_cost = models.DecimalField(max_digits=20, decimal_places=2)
-    payment_type = models.CharField(max_length=50, choices=PAYMENT_CHOICES)
+    # payment_info = models.ForeignKey(
+    #     'payment.Payment', null=True, on_delete=models.SET_NULL
+    # )
+
+
+class OrderItem(models.Model):
+    # Delivered items info.
+    # order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    # product = models.ForeignKey(
+    #     'products.Product', null=True, on_delete=models.SET_NULL
+    # )
+    amount = models.PositiveSmallIntegerField(default=1)
