@@ -11,12 +11,13 @@ class MessageModel(models.Model):
     )
     timestamp = models.DateTimeField('timestamp', auto_now_add=True, editable=False, db_index=True)
     body = models.TextField('body', max_length=20000)
+    is_received = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.id)
+        return f'Message from {self.id}  to ...'
 
     def save(self, *args, **kwargs):
-        self.body = self.body.strip()
         super(MessageModel, self).save(*args, **kwargs)
 
     class Meta:
