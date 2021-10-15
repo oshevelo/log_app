@@ -8,14 +8,14 @@ function updateUserList() {
     $.getJSON('api/user/', data => {
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
-            const userItem = `<a class="list-group-item user">${data[i]['username']}</a>`;
+            const userItem = `<a class="list-group-item user" id="${data[i].id}">${data[i]['username']}</a>`;
             $(userItem).appendTo('#user-list');
         }
         $('.user').click(() => {
             userList.children('.active').removeClass('active');
             let selected = event.target;
             $(selected).addClass('active');
-            setCurrentRecipient(selected.text);
+            setCurrentRecipient(selected);
         });
     });
 }
@@ -26,21 +26,23 @@ function drawMessage(message) {
     if (message.user === currentUser) position = 'right';
     const messageItem = `
             <li class="message ${position}">
-                <div class="avatar">${message.user}</div>
-                    <div class="text_wrapper">
-                        <div class="text">${message.body}<br>
-                            <span class="small">${date}</span>
+<!--                <img class="avatar" src="${message.user.avatar}">-->
+                <p class="username">${message.user.username}</p>
+                <div class="text_wrapper">
+                    <div class="text">${message.body}<br>
+                        <span class="small">${date}</span>
                     </div>
                 </div>
             </li>`;
     $(messageItem).appendTo('#messages');
 }
 
-function getConversation(recipient) {
-    $.getJSON(`/api/message/?target=${recipient}`, data => {
+function getConversation(user) {
+    console.log(user);
+    $.getJSON(`/messenger/api/message?target=${user.id}`, data => {
         messageList.children('.message').remove();
-        for (let i = data['results'].length - 1; i >= 0; i--) {
-            drawMessage(data['results'][i]);
+        for (let i = data.length - 1; i >= 0; i--) {
+            drawMessage(data[i]);
         }
         messageList.animate({scrollTop: messageList.prop('scrollHeight')});
     });
@@ -66,9 +68,9 @@ function sendMessage(recipient, body) {
     .fail(() => alert('Error! Check console!'));
 }
 
-function setCurrentRecipient(username) {
-    currentRecipient = username;
-    getConversation(currentRecipient);
+function setCurrentRecipient(user) {
+    currentRecipient = user.text;
+    getConversation(user);
     enableInput();
 }
 

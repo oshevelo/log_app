@@ -19,5 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
-    path('messenger/', include('messenger.urls')),
+    path('messenger/', include('Messenger.urls')),
 ]

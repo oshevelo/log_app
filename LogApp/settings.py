@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'messenger.apps.messengerConfig',
+    'Messenger.apps.MessengerConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-from .local_settings import *
 
 MESSAGES_TO_LOAD = 15
+
+from .local_settings import *

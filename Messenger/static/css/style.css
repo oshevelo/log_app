@@ -20,6 +20,7 @@
 .messages .message.left .avatar {
     background-color: #f55946;
     float: left;
+    margin: 10px 0;
 }
 
 .messages .message.left .text_wrapper {
@@ -102,4 +103,12 @@
 
 body {
     font-size: 15px;
+}
+
+.message .username {
+    float: left;
+    /* color: red; */
+    color: #3a6d99;
+    font-weight: 700;
+    margin: 6px 0 5px 25px;
 }
