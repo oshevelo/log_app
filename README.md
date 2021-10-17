@@ -1,5 +1,4 @@
 # LogApp
-
 The Logistics LogApp service from Hillel, a developer of monitoring systems, is designed specifically for distribution companies and delivery services.
 
 The new request management application is used in conjunction with the web version of LogApp and is designed for drivers and couriers who deliver goods to retailers or customers.
