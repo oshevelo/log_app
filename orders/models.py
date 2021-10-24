@@ -6,9 +6,9 @@ class Order(models.Model):
 
     class Status:
 
-        active = 1
-        done = 2
-        canceled = 3
+        active = 'active'
+        done = 'done'
+        canceled = 'canceled'
 
     STATUS_CHOICES = [
         (Status.active, 'order in progress'),
@@ -16,14 +16,20 @@ class Order(models.Model):
         (Status.canceled, 'order canceled')
     ]
     # General info.
-    status = models.PositiveSmallIntegerField(
-        choices=STATUS_CHOICES, default=Status.active
+    status = models.CharField(
+        choices=STATUS_CHOICES, default=Status.active, max_length=50
     )
     description = models.TextField(max_length=2500, blank=True)
     # Participants info.
-    # sender = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    # courier = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    # receiver = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    sender = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,
+        related_name='sender'
+    )
+    courier = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,
+        related_name='courier'
+    )
+    receiver = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,
+        related_name='receiver'
+    )
     # vehicle = models.ForeignKey(
     #     'vehicles.Vehicle', null=True, on_delete=models.SET_NULL
     # )
