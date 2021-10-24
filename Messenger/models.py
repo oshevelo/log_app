@@ -26,11 +26,12 @@ class Message(models.Model):
         ordering = ('-timestamp',)
 
 
-class GroupChats(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='group_chats')
+class GroupChat(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_chat')
+    participants = models.ManyToManyField(User, related_name='group_chat')
     name = models.TextField('body', max_length=200)
     description = models.TextField('body', max_length=2000)
-    image = models.ImageField(upload_to='images/group_avatar', default='images/group_avatar/default.png')
+    image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png')
 
     class Meta:
         verbose_name = 'group_chats'

@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import generics, pagination
 
-from LogApp import settings
 from .serializers import MessageListSerializer, UserModelSerializer, MessageDetailsSerializer, UserDetailsSerializer
 from .models import Message
 
