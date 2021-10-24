@@ -1,4 +1,3 @@
-# from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -35,14 +34,3 @@ class GroupChats(models.Model):
 
     class Meta:
         verbose_name = 'group_chats'
-
-# class MyUser(AbstractBaseUser): Question: How add avatar for our local User?
-# https://github.com/16520511/LIFE/blob/4fe5ab6729ee4b29e6631aade71d824906bc3f74/socialife/models.py
-
-
-class UserAvatar(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='avatar')
-    image = models.ImageField(upload_to='images/user_avatar', default='images/user_avatar/default.png')
-
-    class Meta:
-        verbose_name = 'user_avatar'

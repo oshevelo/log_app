@@ -5,7 +5,7 @@ let userList = $('#user-list');
 let messageList = $('#messages');
 
 function updateUserList() {
-    $.getJSON('api/user/', data => {
+    $.getJSON('api/users/', data => {
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
             const userItem = `<a class="list-group-item user" id="${data[i].id}">${data[i]['username']}</a>`;
@@ -26,7 +26,7 @@ function drawMessage(message) {
     if (message.user === currentUser) position = 'right';
     const messageItem = `
             <li class="message ${position}">
-<!--                <img class="avatar" src="${message.user.avatar}">-->
+                <img class="avatar" src="${message.user.avatar}">
                 <p class="username">${message.user.username}</p>
                 <div class="text_wrapper">
                     <div class="text">${message.body}<br>

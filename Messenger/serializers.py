@@ -19,16 +19,13 @@ class RecipientNestedSerializer(ModelSerializer):
 class MessageListSerializer(ModelSerializer):
     user = UserNestedSerializer()
     recipient = RecipientNestedSerializer()
-    #
-    # def create(self, validated_data):
-    #     user = self.context['request'].user
-    #     recipient = get_object_or_404(
-    #         User, username=validated_data['recipient']['username'])
-    #     msg = Message(recipient=recipient,
-    #                        body=validated_data['body'],
-    #                        user=user)
-    #     msg.save()
-    #     return msg
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        recipient = get_object_or_404(User, username=validated_data['recipient']['username'])
+        msg = Message(recipient=recipient, body=validated_data['body'], user=user, is_received=False, is_read=False)
+        msg.save()
+        return msg
 
     class Meta:
         model = Message

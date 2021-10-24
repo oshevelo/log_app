@@ -7,6 +7,6 @@ urlpatterns = [
     # Api:
     path('api/message/', views.MessageList.as_view(), name='MessageList'),
     path('api/message/<int:message_id>/', views.MessageDetails.as_view(), name='MessageDetails'),
-    path('api/user/', views.UserList.as_view(), name='UserList'),
+    path('api/users/', views.UserList.as_view(), name='UserList'),
     path('api/user/<int:user_id>/', views.UserDetails.as_view(), name='UserDetails')
 ]

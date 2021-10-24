@@ -107,7 +107,6 @@ body {
 
 .message .username {
     float: left;
-    /* color: red; */
     color: #3a6d99;
     font-weight: 700;
     margin: 6px 0 5px 25px;

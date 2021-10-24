@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'orders.apps.OrdersConfig',
-    'demo'
+    'demo',
     'Messenger.apps.MessengerConfig',
 ]
 
@@ -127,7 +127,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-MESSAGES_TO_LOAD = 15
 
 from .local_settings import *
