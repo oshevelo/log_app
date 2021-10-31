@@ -10,7 +10,7 @@ class GroupChat(models.Model):
     image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png')
 
     def __str__(self):
-        return f'Create the chat group'
+        return self.name
 
     def save(self, *args, **kwargs):
         super(GroupChat, self).save(*args, **kwargs)

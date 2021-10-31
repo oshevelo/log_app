@@ -4,7 +4,7 @@ from .models import Message, GroupChat
 
 class MessageAdmin(admin.ModelAdmin):
     list_filter = ('user', 'recipient')
-    raw_id_fields = ('user', 'recipient')
+    raw_id_fields = ('group_chat', 'user', 'recipient')
     search_fields = ('id', 'body', 'user__username', 'recipient__username')
     list_display = ('id', 'group_chat', 'user', 'recipient', 'body', 'timestamp')
     list_display_links = ('id',)
