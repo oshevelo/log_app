@@ -2,7 +2,25 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class GroupChat(models.Model):
+    name = models.TextField('name', max_length=200)
+    description = models.TextField('description', max_length=2000)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_chat')
+    participants = models.ManyToManyField(User, related_name='group_chat')
+    image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png')
+
+    def __str__(self):
+        return f'Create the chat group'
+
+    def save(self, *args, **kwargs):
+        super(GroupChat, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Group chat'
+
+
 class Message(models.Model):
+    group_chat = models.ForeignKey(GroupChat, on_delete=models.CASCADE, verbose_name='Group Chat', db_index=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name='user', related_name='from_user', db_index=True
     )
@@ -24,14 +42,3 @@ class Message(models.Model):
         verbose_name = 'message'
         verbose_name_plural = 'messages'
         ordering = ('-timestamp',)
-
-
-class GroupChat(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_chat')
-    participants = models.ManyToManyField(User, related_name='group_chat')
-    name = models.TextField('body', max_length=200)
-    description = models.TextField('body', max_length=2000)
-    image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png')
-
-    class Meta:
-        verbose_name = 'group_chats'

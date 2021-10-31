@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from .models import Message
+from .models import Message, GroupChat
 from rest_framework.serializers import ModelSerializer, CharField
 
 
@@ -10,15 +10,9 @@ class UserNestedSerializer(ModelSerializer):
         fields = ('id', 'username')
 
 
-class RecipientNestedSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username')
-
-
 class MessageListSerializer(ModelSerializer):
     user = UserNestedSerializer()
-    recipient = RecipientNestedSerializer()
+    recipient = UserNestedSerializer()
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -32,19 +26,10 @@ class MessageListSerializer(ModelSerializer):
         fields = ('id', 'user', 'recipient', 'body', 'timestamp', 'is_received', 'is_read')
 
 
-class MessageDetailsSerializer(ModelSerializer):
+class GroupChatListSerializer(ModelSerializer):
+
     class Meta:
-        model = Message
-        fields = ('id', 'user', 'recipient', 'body', 'timestamp', 'is_received', 'is_read')
+        model = GroupChat
+        fields = ('id', 'owner', 'participants', 'name',  'description', 'image')
 
 
-class UserModelSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username')
-
-
-class UserDetailsSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'date_joined')
