@@ -20,8 +20,8 @@ class GroupChat(models.Model):
 
 
 class Message(models.Model):
-    group_chat = models.ForeignKey(GroupChat, on_delete=models.CASCADE, verbose_name='Group Chat', db_index=True)
-    user = models.ForeignKey(
+    group_chat = models.ForeignKey('GroupChat', on_delete=models.CASCADE, verbose_name='Group Chat', db_index=True)
+    sender = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name='user', related_name='from_user', db_index=True
     )
     recipient = models.ForeignKey(

@@ -15,15 +15,15 @@ class MessageListSerializer(ModelSerializer):
     recipient = UserNestedSerializer()
 
     def create(self, validated_data):
-        user = self.context['request'].user
+        sender = self.context['request'].user
         recipient = get_object_or_404(User, username=validated_data['recipient']['username'])
-        msg = Message(recipient=recipient, body=validated_data['body'], user=user, is_received=False, is_read=False)
+        msg = Message(recipient=recipient, body=validated_data['body'], user=sender, is_received=False, is_read=False)
         msg.save()
         return msg
 
     class Meta:
         model = Message
-        fields = ('id', 'user', 'recipient', 'body', 'timestamp', 'is_received', 'is_read')
+        fields = ('id', 'sender', 'recipient', 'body', 'timestamp', 'is_received', 'is_read')
 
 
 class GroupChatListSerializer(ModelSerializer):

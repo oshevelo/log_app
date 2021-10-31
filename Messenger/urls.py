@@ -5,6 +5,7 @@ from Messenger import views
 urlpatterns = [
     path('', TemplateView.as_view(template_name='chat.html'), name='home'),
     # Api:
-    path('api/message/', views.MessageList.as_view(), name='MessageList'),
-    path('api/users/', views.UserList.as_view(), name='UserList'),
+    path('message/', views.MessageList.as_view(), name='MessageList'),
+    path('users/', views.UserList.as_view(), name='UserList'),
+    path('group-chat/', views.GroupChatList.as_view(), name='UserList'),
 ]
