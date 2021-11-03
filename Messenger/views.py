@@ -18,7 +18,7 @@ class GroupChatList(generics.ListCreateAPIView):
     serializer_class = GroupChatListSerializer
 
 
-class UserList(generics.ListCreateAPIView):
+class UserList(generics.ListCreateAPIView): # Todo: Will move to Profile
     pagination_class = pagination.LimitOffsetPagination
     queryset = User.objects.all()
     serializer_class = UserNestedSerializer
