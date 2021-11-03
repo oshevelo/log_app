@@ -7,7 +7,7 @@ class Question(models.Model):
     question_text = models.CharField(max_length=12)
     pub_date = models.DateTimeField('date published')
     description = models.TextField(max_length=2000)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return self.question_text
