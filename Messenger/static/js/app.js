@@ -5,10 +5,10 @@ let userList = $('#user-list');
 let messageList = $('#messages');
 
 function updateUserList() {
-    $.getJSON('api/users/', data => {
+    $.getJSON('group-chat/', data => {
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
-            const userItem = `<a class="list-group-item user" id="${data[i].id}">${data[i]['username']}</a>`;
+            const userItem = `<a class="list-group-item user" id="${data[i].id}">${data[i]['name']}</a>`;
             $(userItem).appendTo('#user-list');
         }
         $('.user').click(() => {
@@ -39,7 +39,7 @@ function drawMessage(message) {
 
 function getConversation(user) {
     console.log(user);
-    $.getJSON(`/messenger/api/message?target=${user.id}`, data => {
+    $.getJSON(`/messenger/message?target=${user.id}`, data => {
         messageList.children('.message').remove();
         for (let i = data.length - 1; i >= 0; i--) {
             drawMessage(data[i]);
@@ -51,7 +51,7 @@ function getConversation(user) {
 
 function getMessageById(message) {
     id = JSON.parse(message).message
-    $.getJSON(`/api/message/${id}/`, data => {
+    $.getJSON(`/message/${id}/`, data => {
         if (data.user === currentRecipient ||
             (data.recipient === currentRecipient && data.user == currentUser)) {
             drawMessage(data);
@@ -61,7 +61,7 @@ function getMessageById(message) {
 }
 
 function sendMessage(recipient, body) {
-    $.post('/api/message/', {
+    $.post('/message/', {
         recipient: recipient,
         body: body
     })

@@ -60,3 +60,6 @@ Additional commands:
 
 Add avatar:
     python3 -m pip install Pillow
+
+Add django_filters:
+    pip install django-filter
