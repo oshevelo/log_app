@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'orders.apps.OrdersConfig',
-
+    'Route',
     'demo',
     'Messenger.apps.MessengerConfig',
 ]
