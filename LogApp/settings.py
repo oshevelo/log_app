@@ -31,21 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django_filters',
-    'jet',
-    'rest_framework',
-
-    
+    'Points.apps.PointsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'orders.apps.OrdersConfig',
-
-    'demo',
-    'Messenger.apps.MessengerConfig',
+    'rest_framework',
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -60,10 +54,18 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'LogApp.urls'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',
+    ]
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,7 +87,7 @@ WSGI_APPLICATION = 'LogApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '',
+        'NAME': 'db_project2',
         'USER': '',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -132,4 +134,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-from .local_settings import *
+
