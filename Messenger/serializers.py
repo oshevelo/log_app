@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from .models import Message, GroupChat
 from rest_framework import serializers
+
+from .models import Message, GroupChat
 
 
 class UserNestedSerializer(serializers.ModelSerializer): # Todo: Will move to Profile
@@ -15,16 +16,19 @@ class UserNestedSerializer(serializers.ModelSerializer): # Todo: Will move to Pr
 
 
 class MessageListSerializer(serializers.ModelSerializer):
-    sender = UserNestedSerializer(read_only=True)
-    recipient = UserNestedSerializer(read_only=True)
+    sender = UserNestedSerializer()
+    recipient = UserNestedSerializer()
 
     class Meta:
         model = Message
-        fields = ('id', 'sender', 'recipient', 'body', 'timestamp', 'is_read')
+        fields = ('id', 'group_chat', 'sender', 'recipient', 'body', 'timestamp', 'is_read')
 
     def create(self, validated_data):
-        recipient = get_object_or_404(User, username=validated_data['recipient']['username'])
-        group_chat = get_object_or_404(GroupChat, group_chat=validated_data['group_chat'])
+        sender = get_object_or_404(User, username=validated_data['sender']['id'])
+        recipient = get_object_or_404(User, username=validated_data['recipient']['id'])
+        group_chat = get_object_or_404(GroupChat, name=validated_data['group_chat'])
+
+        print('check')
         msg = Message(
             group_chat=group_chat,
             sender=sender,

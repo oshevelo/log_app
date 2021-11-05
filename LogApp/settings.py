@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django_filters',
-    'jet',
+    # 'jet',
     'rest_framework',
 
     
