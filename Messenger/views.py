@@ -9,14 +9,24 @@ from .models import Message, GroupChat
 
 class MessageList(generics.ListCreateAPIView):
     pagination_class = pagination.LimitOffsetPagination
-    queryset = Message.objects.all()
     serializer_class = MessageListSerializer
+
+    def get_queryset(self):
+        group_chat_id = self.request.query_params.get('group_chat_id')
+        if group_chat_id:
+            group_chat = get_object_or_404(GroupChat, pk=group_chat_id)
+            return Message.objects.filter(group_chat=group_chat)
+        # TODO: Create Group Chat
 
 
 class GroupChatList(generics.ListCreateAPIView):
     pagination_class = pagination.LimitOffsetPagination
     queryset = GroupChat.objects.all()
     serializer_class = GroupChatListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return GroupChat.objects.filter(owner=user)
 
 
 class GroupChatDetails(generics.ListCreateAPIView):

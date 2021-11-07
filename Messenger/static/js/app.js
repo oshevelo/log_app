@@ -1,14 +1,33 @@
 let currentRecipient = '';
 let chatInput = $('#chat-input');
 let chatButton = $('#btn-send');
+let groupList = $('#group-list');
 let userList = $('#user-list');
 let messageList = $('#messages');
 
-function updateUserList() {
+function updateGroupList() {
     $.getJSON('group-chat/', data => {
+        userList.children('.group').remove();
+        for (let i = 0; i < data.length; i++) {
+            const groupItem = `<a class="list-group-item group" id="${data[i].id}">${data[i]['name']}</a>`;
+            $(groupItem).appendTo('#group-list');
+        }
+        $('.group').click(() => {
+            groupList.children('.active').removeClass('active');
+            let selected = event.target;
+            $(selected).addClass('active');
+            setCurrentRecipient(selected);
+        });
+    });
+}
+function updateUserList() {
+    $.getJSON('user/', data => {
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
-            const userItem = `<a class="list-group-item user" id="${data[i].id}">${data[i]['name']}</a>`;
+            const userItem = `<a class="list-group-item user" id="${data[i].id}">
+                ${data[i]['first_name']}
+                <span>${data[i]['email']}</span>
+            </a>`;
             $(userItem).appendTo('#user-list');
         }
         $('.user').click(() => {
@@ -23,11 +42,11 @@ function updateUserList() {
 function drawMessage(message) {
     let position = 'left';
     const date = new Date(message.timestamp);
-    if (message.user === currentUser) position = 'right';
+    if (message.sender.id === currentUser.id) position = 'right';
     const messageItem = `
             <li class="message ${position}">
-                <img class="avatar" src="${message.user.avatar}">
-                <p class="username">${message.user.username}</p>
+                <img class="avatar" src="${message.recipient.avatar}">
+                <p class="username">${message.recipient.first_name}</p>
                 <div class="text_wrapper">
                     <div class="text">${message.body}<br>
                         <span class="small">${date}</span>
@@ -37,9 +56,9 @@ function drawMessage(message) {
     $(messageItem).appendTo('#messages');
 }
 
-function getConversation(user) {
-    console.log(user);
-    $.getJSON(`/messenger/message?target=${user.id}`, data => {
+function getConversation(group_chat) {
+    console.log(group_chat);
+    $.getJSON(`/messenger/message/?group_chat_id=${group_chat.id}`, data => {
         messageList.children('.message').remove();
         for (let i = data.length - 1; i >= 0; i--) {
             drawMessage(data[i]);
@@ -68,9 +87,9 @@ function sendMessage(recipient, body) {
     .fail(() => alert('Error! Check console!'));
 }
 
-function setCurrentRecipient(user) {
-    currentRecipient = user.text;
-    getConversation(user);
+function setCurrentRecipient(group_chat) {
+    currentRecipient = group_chat;
+    getConversation(group_chat);
     enableInput();
 }
 
@@ -87,6 +106,7 @@ function disableInput() {
 }
 
 $(document).ready(function () {
+    updateGroupList();
     updateUserList();
     disableInput();
 
