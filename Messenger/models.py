@@ -10,9 +10,6 @@ class GroupChat(models.Model):
     image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png',
                               blank=True, null=True)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name = 'Group chat'
 

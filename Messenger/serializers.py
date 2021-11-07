@@ -24,20 +24,13 @@ class MessageListSerializer(serializers.ModelSerializer):
         fields = ('id', 'group_chat', 'sender', 'recipient', 'body', 'timestamp', 'is_read')
 
     def create(self, validated_data):
-        sender = get_object_or_404(User, username=validated_data['sender']['id'])
-        recipient = get_object_or_404(User, username=validated_data['recipient']['id'])
-        group_chat = get_object_or_404(GroupChat, name=validated_data['group_chat'])
+        sender = get_object_or_404(User, id=validated_data['sender']['id'])
+        recipient = get_object_or_404(User, id=validated_data['recipient']['id'])
 
-        print('check')
-        msg = Message(
-            group_chat=group_chat,
-            sender=sender,
-            recipient=recipient,
-            body=validated_data['body'],
-            is_read=False
-        )
-        msg.save()
-        return msg
+        validated_data['sender'] = sender
+        validated_data['recipient'] = recipient
+
+        return super().create(validated_data)
 
 
 class GroupChatListSerializer(serializers.ModelSerializer):
@@ -48,33 +41,50 @@ class GroupChatListSerializer(serializers.ModelSerializer):
         model = GroupChat
         fields = ('id', 'name', 'description', 'owner', 'participants',  'image')
 
-
-    # def validate_owner(self, data):
-    #     owner_id = data.get('id')
-    #     if not User.objects.filter(pk=owner_id).exists():
-    #         raise serializers.ValidationError({'owner_id': 'wrong id'})
-    #     return data
-
     def create(self, validated_data):
-        if 'owner' in validated_data:
-            owner_id = validated_data.get('owner', {}).get('id')
-            owner = get_object_or_404(User, pk=owner_id)
-            validated_data['owner'] = owner
+        owner_id = validated_data.get('owner', {}).get('id')
+        owner = get_object_or_404(User, pk=owner_id)
+        validated_data['owner'] = owner
 
-        if 'participants' in validated_data:
-            for participant in validated_data.get('participants', {}):
-                participant_id = participant['id']
-                participant = get_object_or_404(User, pk=participant_id)
-                print(participant)
-                validated_data['participants'] = validated_data.get('participants', {})
+        data = validated_data.copy()
+        participants = data.pop('participants', [])
+        instance = self.Meta.model.objects.create(**data)
 
-        # image = self.context['request'].image #add Valid .png / size / pixel 100x100
-        group_chat = GroupChat(
-            name=validated_data['name'],
-            description=validated_data['description'],
-            owner=owner,
-            participants=validated_data.get('participants'),
-            image=validated_data.get('image'),
-        )
-        group_chat.save()
-        return group_chat
+        for participant in participants:
+            participant_id = participant['id']
+            participant = get_object_or_404(User, pk=participant_id)
+            instance.participants.add(participant)
+        return instance
+
+
+class GroupChatDetailsSerializer(serializers.ModelSerializer):
+    owner = UserNestedSerializer(read_only=True)
+    participants = UserNestedSerializer(many=True)
+
+    class Meta:
+        model = GroupChat
+        fields = ('id', 'name', 'description', 'owner', 'participants',  'image')
+
+
+    def update(self, instance, validated_data):
+        owner_id = validated_data.get('owner', {}).get('id')
+        owner = get_object_or_404(User, pk=owner_id)
+        validated_data['owner'] = owner
+
+        data = validated_data.copy()
+        participants = data.pop('participants', [])
+
+        for participant in participants:
+            participant_id = participant['id']
+            participant = get_object_or_404(User, pk=participant_id)
+            instance.participants.add(participant)
+
+        return super().update(instance, validated_data)
+
+class ValidateUser(serializers.ModelSerializer):
+
+    def validate(self, data):
+        if not User.objects.filter(pk=data.get('id')).exists():
+            raise serializers.ValidationError({'User': f'User doesn\'t exist by {data.get("id")}'})
+            # raise serializers.ValidationError({data.get('name_field'): f'Wrong {data.get("name_field")}'}) ???
+        return data
