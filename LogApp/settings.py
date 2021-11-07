@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'knox',
+    'orders.apps.OrdersConfig',
+    'Route',
+    'demo',
+    'Messenger.apps.MessengerConfig',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +139,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+from .local_settings import *
