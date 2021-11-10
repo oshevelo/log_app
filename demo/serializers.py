@@ -16,7 +16,7 @@ class UserNestedSerializer(serializers.ModelSerializer):
         
 class QuestionListSerializer(serializers.ModelSerializer):
     
-    author = UserNestedSerializer()
+    author = UserNestedSerializer(read_only=True)
     
     class Meta:
         model = Question
