@@ -14,10 +14,8 @@ class QuestionList(generics.ListCreateAPIView):
     filterset_class = FilterQuestion
     
     def get_queryset(self):
-        print(self.request.query_params)
-        #question_text = self.request.query_params.get('question_text')
-        #if question_text:
-        #    return Question.objects.filter(question_text=question_text)    
+        if not self.request.user.is_superuser:
+            return Question.objects.filter(respondent=self.request.user)
         return Question.objects.all()
     
     
@@ -25,4 +23,7 @@ class QuestionDetails(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = QuestionDetailsSerializer
     
     def get_object(self):
+        if not self.request.user.is_superuser:
+            get_object_or_404(Question, pk=self.kwargs.get('question_id'), respondent=self.request.user)
         return get_object_or_404(Question, pk=self.kwargs.get('question_id'))
+        
