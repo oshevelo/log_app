@@ -5,8 +5,11 @@ let groupList = $('#group-list');
 let userList = $('#user-list');
 let messageList = $('#messages');
 
+let groupListData = [];
+
 function updateGroupList() {
     $.getJSON('group-chat/', data => {
+        groupListData = data;
         userList.children('.group').remove();
         for (let i = 0; i < data.length; i++) {
             const groupItem = `<a class="list-group-item group" id="${data[i].id}">${data[i]['name']}</a>`;
@@ -78,10 +81,12 @@ function getMessageById(message) {
     });
 }
 
-function sendMessage(recipient, body) {
-    console.log(recipient);
+function sendMessage(groupId, body) {
+    let currentGroup = groupListData.find(x => x.id === Number(groupId));
+    let recipientId = currentGroup.participants[1].id; // Todo
+
     $.post('/messenger/message/', {
-        recipient: recipient,
+        recipient: {'id': recipientId},
         body: body
     })
     .fail(() => alert('Error! Check console!'));
@@ -120,7 +125,6 @@ $(document).ready(function () {
 
     chatButton.click(() => {
         if (chatInput.val().length > 0) {
-            console.log(currentRecipient);
             sendMessage(currentRecipient, chatInput.val());
             chatInput.val('');
         }
