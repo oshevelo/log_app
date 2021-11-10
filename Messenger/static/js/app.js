@@ -57,7 +57,6 @@ function drawMessage(message) {
 }
 
 function getConversation(group_chat) {
-    console.log(group_chat);
     $.getJSON(`/messenger/message/?group_chat_id=${group_chat.id}`, data => {
         messageList.children('.message').remove();
         for (let i = data.length - 1; i >= 0; i--) {
@@ -70,7 +69,7 @@ function getConversation(group_chat) {
 
 function getMessageById(message) {
     id = JSON.parse(message).message
-    $.getJSON(`/message/${id}/`, data => {
+    $.getJSON(`/messenger/message/${id}/`, data => {
         if (data.user === currentRecipient ||
             (data.recipient === currentRecipient && data.user == currentUser)) {
             drawMessage(data);
@@ -80,7 +79,8 @@ function getMessageById(message) {
 }
 
 function sendMessage(recipient, body) {
-    $.post('/message/', {
+    console.log(recipient);
+    $.post('/messenger/message/', {
         recipient: recipient,
         body: body
     })
@@ -88,7 +88,7 @@ function sendMessage(recipient, body) {
 }
 
 function setCurrentRecipient(group_chat) {
-    currentRecipient = group_chat;
+    currentRecipient = group_chat.id;
     getConversation(group_chat);
     enableInput();
 }
@@ -111,21 +111,22 @@ $(document).ready(function () {
     disableInput();
 
 // Todo: Connect for WS
-    // const socket = new WebSocket('ws://' + window.location.host + '/ws?session_key=${sessionKey}')
-    //
-    // chatInput.keypress(e => {
-    //     if (e.keyCode == 13)
-    //         chatButton.click();
-    // });
-    //
-    // chatButton.click(() => {
-    //     if (chatInput.val().length > 0) {
-    //         sendMessage(currentRecipient, chatInput.val());
-    //         chatInput.val('');
-    //     }
-    // });
-    //
-    // socket.onmessage = e => getMessageById(e.data);
+    const socket = new WebSocket('ws://' + window.location.host + '/ws?session_key=${sessionKey}')
+
+    chatInput.keypress(e => {
+        if (e.keyCode == 13)
+            chatButton.click();
+    });
+
+    chatButton.click(() => {
+        if (chatInput.val().length > 0) {
+            console.log(currentRecipient);
+            sendMessage(currentRecipient, chatInput.val());
+            chatInput.val('');
+        }
+    });
+
+    socket.onmessage = e => getMessageById(e.data);
 });
 
 

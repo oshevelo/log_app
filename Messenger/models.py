@@ -3,8 +3,8 @@ from django.db import models
 
 
 class GroupChat(models.Model):
-    name = models.TextField('name', max_length=200, null=True, blank=True)
-    description = models.TextField('description', max_length=2000, null=True, blank=True)
+    name = models.TextField('name', max_length=200)
+    description = models.TextField('description', max_length=2000, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_chats')
     participants = models.ManyToManyField(User,)
     image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png',
