@@ -63,3 +63,7 @@ Add avatar:
 
 Add django_filters:
     pip install django-filter
+
+Add WS:
+    pip install channels
+    pip install channels-redis

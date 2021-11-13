@@ -7,6 +7,8 @@ let messageList = $('#messages');
 
 let groupListData = [];
 
+$(`<span>Current user: ${currentUserName}</span>`).appendTo('.current-user');
+
 function updateGroupList() {
     $.getJSON('group-chat/', data => {
         groupListData = data;
@@ -21,19 +23,24 @@ function updateGroupList() {
             $(selected).addClass('active');
             setCurrentRecipient(selected);
         });
-    });
+    })
+        .then(() => updateUserList());
 }
 function updateUserList() {
-    $.getJSON('user/', data => {
+    $.getJSON('user/', users => {
         userList.children('.user').remove();
-        for (let i = 0; i < data.length; i++) {
-            const userItem = `<a class="list-group-item user" id="${data[i].id}">
-                ${data[i]['first_name']}
-                <span>${data[i]['email']}</span>
-            </a>`;
-            $(userItem).appendTo('#user-list');
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];
+            if (user.id !== currentUserId) {
+                 const userItem = `<a class="list-group-item user">
+                    ${user['username']}
+                    <button class="btn-plus pull-right add-user" id="${user.id}" title="Add User for Group">+</button>
+                </a>`;
+                $(userItem).appendTo('#user-list');
+            }
+
         }
-        $('.user').click(() => {
+        $('.add-user').click(() => {
             userList.children('.active').removeClass('active');
             let selected = event.target;
             $(selected).addClass('active');
@@ -45,11 +52,11 @@ function updateUserList() {
 function drawMessage(message) {
     let position = 'left';
     const date = new Date(message.timestamp);
-    if (message.sender.id === currentUser.id) position = 'right';
+    if (message.sender.id === currentUserId) position = 'right';
     const messageItem = `
             <li class="message ${position}">
                 <img class="avatar" src="${message.recipient.avatar}">
-                <p class="username">${message.recipient.first_name}</p>
+                <p class="username">${message.recipient.username}</p>
                 <div class="text_wrapper">
                     <div class="text">${message.body}<br>
                         <span class="small">${date}</span>
@@ -74,7 +81,7 @@ function getMessageById(message) {
     id = JSON.parse(message).message
     $.getJSON(`/messenger/message/${id}/`, data => {
         if (data.user === currentRecipient ||
-            (data.recipient === currentRecipient && data.user == currentUser)) {
+            (data.recipient === currentRecipient && data.user == currentUserId)) {
             drawMessage(data);
         }
         messageList.animate({scrollTop: messageList.prop('scrollHeight')});
@@ -89,7 +96,7 @@ function sendMessage(groupId, body) {
         recipient: {'id': recipientId},
         body: body
     })
-    .fail(() => alert('Error! Check console!'));
+    // .fail(() => alert('Error! Check console!'));
 }
 
 function setCurrentRecipient(group_chat) {
@@ -112,10 +119,9 @@ function disableInput() {
 
 $(document).ready(function () {
     updateGroupList();
-    updateUserList();
     disableInput();
+    // let socket = new WebSocket(`ws://127.0.0.1:8000/?session_key=${sessionKey}`);
 
-// Todo: Connect for WS
     const socket = new WebSocket('ws://' + window.location.host + '/ws?session_key=${sessionKey}')
 
     chatInput.keypress(e => {

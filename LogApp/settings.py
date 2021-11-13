@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django_filters',
     'jet',
     'rest_framework',
-
+    'channels',
     
     'django.contrib.admin',
     'django.contrib.auth',
