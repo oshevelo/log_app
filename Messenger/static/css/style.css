@@ -106,10 +106,17 @@ body {
 }
 
 .message .username {
-    float: left;
     color: #3a6d99;
     font-weight: 700;
     margin: 6px 0 5px 25px;
+}
+
+.username.left {
+    float: left;
+}
+
+.username.right {
+    float: right;
 }
 
 .btn-plus {

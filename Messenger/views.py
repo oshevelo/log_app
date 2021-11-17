@@ -17,15 +17,6 @@ class MessageList(generics.ListCreateAPIView):
         if group_chat_id:
             group_chat = get_object_or_404(GroupChat, pk=group_chat_id)
             return Message.objects.filter(group_chat=group_chat)
-        # TODO: Create Group Chat
-        # new_group = {
-        #     name: f'{self.request.user} - {self.request.query_params.get("group_chat_id")}',
-        #     description: '',
-        #     owner: 1,
-        #     participants: [],
-        #     image: ''
-        # }
-        # GroupChat.objects.create(new_group)
 
 
 class GroupChatList(generics.ListCreateAPIView):

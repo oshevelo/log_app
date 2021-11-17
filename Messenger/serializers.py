@@ -54,6 +54,7 @@ class MessageListSerializer(ValidateUser, serializers.ModelSerializer):
         validated_data['recipient'] = recipient
 
         new = self.id
+        print('Where my PRINT?????????????????')
         if new is None:
             self.notify_ws_clients()
 
