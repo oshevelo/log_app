@@ -14,3 +14,5 @@ class PayDetails(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PayCheck, pk=self.kwargs.get('pk'))
+
+
