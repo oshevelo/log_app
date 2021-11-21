@@ -63,3 +63,16 @@ Add avatar:
 
 Add django_filters:
     pip install django-filter
+
+Add WS:
+    pip install channels
+    pip install channels-redis
+
+    Add redis
+    wget http://download.redis.io/redis-stable.tar.gz
+    tar xvzf redis-stable.tar.gz
+    cd redis-stable
+    make
+
+    export PATH=$PATH:$HOME/Downloads/redis-stable/src
+    redis-server --port 6379
