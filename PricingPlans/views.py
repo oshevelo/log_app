@@ -4,11 +4,12 @@ from .serializers import BasicPlanListSerializer, ProPlanListSerializer, VipPlan
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.views import APIView
-
+from paypal.standard.forms import PayPalPaymentsForm
 
 class BasicPlanList(generics.ListCreateAPIView):
     queryset = BasicPlan.objects.all()
     serializer_class = BasicPlanListSerializer
+
 
 class ProPlanList(generics.ListCreateAPIView):
     queryset = ProPlan.objects.all()
@@ -17,6 +18,8 @@ class ProPlanList(generics.ListCreateAPIView):
 class VipPlanList(generics.ListCreateAPIView):
     queryset = VipPlan.objects.all()
     serializer_class = VipPlanListSerializer
+
+
 
 
 # class PayDetails(generics.RetrieveUpdateDestroyAPIView):
