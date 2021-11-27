@@ -8,7 +8,7 @@ from channels.layers import get_channel_layer
 class ValidateUser(serializers.ModelSerializer):
     def validate_user(self, data, field_name):
         if not User.objects.filter(pk=data.get('id')).exists():
-            raise serializers.ValidationError({field_name: f'User doesn\'t exist by {data.get("id")}'})
+            raise serializers.ValidationError({field_name: f'User doesn\'t exist by id:{data.get("id")}'})
         return data
 
 
@@ -55,8 +55,7 @@ class GroupChatListSerializer(ValidateUser, serializers.ModelSerializer):
         return self.validate_user(data, 'owner')
 
     def validate_participants(self, data):
-        print('LOL', data.get('participants') ) # ???
-        if data.get('participants').len() < 2:
+        if len(data) < 2:
             raise serializers.ValidationError({f'Please add more than one'})
         return data
 
@@ -76,7 +75,7 @@ class GroupChatListSerializer(ValidateUser, serializers.ModelSerializer):
 
 
 class GroupChatDetailsSerializer(ValidateUser, serializers.ModelSerializer):
-    owner = UserNestedSerializer(read_only=True)
+    owner = UserNestedSerializer()
     participants = UserNestedSerializer(many=True)
 
     class Meta:
@@ -84,7 +83,14 @@ class GroupChatDetailsSerializer(ValidateUser, serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'owner', 'participants',  'image')
 
     def validate_owner(self, data):
-        return self.validate_user(data, 'owner')
+        print(222, self.validate_user(data, 'owner') and (data.get('id') == self.context['request'].user.id))
+        return self.validate_user(data, 'owner') and (data.get('id') == self.context['request'].user.id)
+        # return self.validate_user(data, 'owner')
+
+    def validate_participants(self, data):
+        if len(data) < 2:
+            raise serializers.ValidationError({f'Please add more than one'})
+        return data
 
     def update(self, instance, validated_data):
         owner_id = validated_data.get('owner', {}).get('id')
@@ -93,10 +99,9 @@ class GroupChatDetailsSerializer(ValidateUser, serializers.ModelSerializer):
 
         data = validated_data.copy()
         participants = data.pop('participants', [])
+        instance = self.Meta.model.objects.create(**data)
 
         for participant in participants:
-            participant_id = participant['id']
-            participant = get_object_or_404(User, pk=participant_id)
+            participant = get_object_or_404(User, pk=participant['id'])
             instance.participants.add(participant)
-
-        return super().update(instance, validated_data)
+        return instance
