@@ -33,30 +33,12 @@ class MessageListSerializer(ValidateUser, serializers.ModelSerializer):
     def validate_recipient(self, data):
         return self.validate_user(data, 'recipient')
 
-    def notify_ws_clients(self):
-        notification = {
-            'type': 'receive_group_message',
-            'message': '{}'.format(self.id)
-        }
-
-        channel_layer = get_channel_layer()
-        print("user.id {}".format(self.user.id))
-        print("user.id {}".format(self.recipient.id))
-
-        async_to_sync(channel_layer.group_send)("{}".format(self.user.id), notification)
-        async_to_sync(channel_layer.group_send)("{}".format(self.recipient.id), notification)
-
     def create(self, validated_data):
         sender = self.context['request'].user
         recipient = get_object_or_404(User, id=validated_data['recipient']['id'])
 
         validated_data['sender'] = sender
         validated_data['recipient'] = recipient
-
-        new = self.id
-        print('Where my PRINT?????????????????')
-        if new is None:
-            self.notify_ws_clients()
 
         return super().create(validated_data)
 
