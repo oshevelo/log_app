@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from rest_framework.response import Response
 from rest_framework import generics, pagination
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import MessageListSerializer, GroupChatListSerializer, UserNestedSerializer, \
     GroupChatDetailsSerializer
@@ -31,10 +33,20 @@ class GroupChatList(generics.ListCreateAPIView):
 
 class GroupChatDetails(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupChatDetailsSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return get_object_or_404(GroupChat, pk=self.kwargs.get('group_chat_id'))
 
+
+    def put(self, request, *args, **kwargs):
+        context = {'request': request}
+        serializer = GroupChatDetailsSerializer(data=request.data, context=context)
+        if serializer.is_valid():
+            # serializer.update()
+            return Response({'success': 'True', 'message': 'GroupChat changed successfully'},
+                            status=200)
+        return Response(serializer.errors, status=404)
 
 class UserList(generics.ListCreateAPIView): # Todo: Will move to Profile
     pagination_class = pagination.LimitOffsetPagination

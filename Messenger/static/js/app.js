@@ -4,8 +4,10 @@ let chatButton = $('#btn-send');
 let groupList = $('#group-list');
 let userList = $('#user-list');
 let messageList = $('#messages');
+let editGroup = $('#edit-group');
 let groupListData = [];
 let socket = null;
+let groupName = 'Chat';
 
 $(`<span>Current user: ${currentUserName}</span>`).appendTo('.current-user');
 
@@ -18,13 +20,18 @@ function updateGroupList() {
             $(groupItem).appendTo('#group-list');
         }
         $('.group').click(() => {
-            groupList.children('.active').removeClass('active');
-            let selected = event.target;
-            $(selected).addClass('active');
-            setCurrentRecipient(selected);
+            if(groupName !== event.target.firstChild.data) {
+                groupList.children('.active').removeClass('active');
+                let selected = event.target;
+                    groupName = event.target.firstChild.data;
+                    $('.panel-title').text(groupName);
+                $(selected).addClass('active');
+                groupChatId = selected.id;
+                getConversation(selected);
+                enableInput();
+            }
         });
     })
-        // .then(() => updateUserList());
 }
 // function updateUserList() {
 //     $.getJSON('user/', users => {
@@ -38,7 +45,6 @@ function updateGroupList() {
 //                 </a>`;
 //                 $(userItem).appendTo('#user-list');
 //             }
-//
 //         }
 //         $('.add-user').click(() => {
 //             userList.children('.active').removeClass('active');
@@ -56,7 +62,7 @@ function drawMessage(message) {
     const messageItem = `
             <li class="message ${position}">
                 <!-- <img class="avatar" src="${message.recipient.avatar}"> -->
-                <p class="username ${position}">${message.recipient.username}</p>
+                <p class="username ${position}">${message.sender.username}</p>
                 <div class="text_wrapper">
                     <div class="text">${message.body}<br>
                         <span class="small">${date}</span>
@@ -68,12 +74,10 @@ function drawMessage(message) {
 
 function getConversation(chat_group) {
     if (socket) {
-        socket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+        socket.close()
     }
     socket = new WebSocket(
-        'ws://' + window.location.host + '/ws/messenger/' + `?session_key=${sessionKey}&chat_group_id=${chat_group.id}`
+        'ws://' + window.location.host + '/ws/messenger/' + `?v=1&chat_group_id=${chat_group.id}&session_key=${sessionKey}`
     )
 
     socket.onmessage = (e) => getMessageById(e.data);
@@ -90,26 +94,15 @@ function getConversation(chat_group) {
 
 function getMessageById(message) {
     console.log(message);
-    id = JSON.parse(message).body
-    $.getJSON(`/message/${id}/`, data => {
-        if (data.user === groupChatId ||
-            (data.recipient === groupChatId && data.user == currentUserId)) {
-            drawMessage(data);
-        }
+    // $.getJSON(`/message/${JSON.parse(message).group_id}/`, data => {
+        drawMessage(JSON.parse(message));
         messageList.animate({scrollTop: messageList.prop('scrollHeight')});
-    });
+    // });
 }
 
 function sendMessage(groupId, body) {
     let currentGroup = groupListData.find(x => x.id === Number(groupId));
     let recipientId = currentGroup.participants[1].id; // Todo
-    console.log(recipientId);
-    // socket.onmessage = function(e) {
-    //     const data = JSON.parse(e.data);
-    //     const message = data['message'];
-    //     document.querySelector('#chat-log').value += (message + '\n');
-    // };
-    //
 
     socket.send(JSON.stringify({
         recipient: {'id': recipientId},
@@ -122,14 +115,6 @@ function sendMessage(groupId, body) {
     // })
     // .fail(() => alert('Error! Check console!'));
 }
-
-function setCurrentRecipient(chat_group) {
-    groupChatId = chat_group.id;
-    console.log(chat_group);
-    getConversation(chat_group);
-    enableInput();
-}
-
 
 function enableInput() {
     chatInput.prop('disabled', false);

@@ -16,18 +16,30 @@
                         {# Groups go here #}
                     </div>
                 </div>
-                <p>Pick a user and start chatting!</p>
-                <div id="user-list" class="list-group">
-                    <div class="list-group-item disabled">
-                        <h4 class="list-group-item-heading">Friends</h4>
-                        {# Users go here #}
+
+                <form action="">
+                    <label>Name New Group</label>
+                        <div class="form-wrapper ng-isolate-scope">
+                            <input class="form-control" id="room-name-input" type="text" size="100"><br>
+                        </div>
+                    <p>Pick a user and start chatting!</p>
+                    <div id="user-list" class="list-group">
+                        <div class="list-group-item disabled">
+                            <h4 class="list-group-item-heading">Friends</h4>
+                            {# Users go here #}
+                        </div>
                     </div>
-                </div>
+                    <input id="room-name-submit" type="button" value="Enter">
+                </form>
+
+
+
             </div>
             <div class="col-md-8">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h4 class="panel-title">Chat</h4>
+                        <h4 class="panel-title"></h4>
+                        <button disabled id="edit-group" class="btn-edit">Edit</button>
                     </div>
                     <div>
                         <ul id="messages" class="messages">
