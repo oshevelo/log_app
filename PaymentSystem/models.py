@@ -16,9 +16,6 @@ class PayCheck(models.Model):
     sum = models.DecimalField(max_digits=5, decimal_places=2)
     email = models.EmailField(default=None)
 
-    def was_published_recently(self):
-        return self.PayCheck >= timezone.now() - datetime.timedelta(days=1)
-
 
 def paytest(request):
     return render(request, "paymants/index.html")

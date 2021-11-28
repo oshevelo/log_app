@@ -1,15 +1,7 @@
 from django.contrib import admin
-from .models import BasicPlan, ProPlan, VipPlan
+from .models import PricePlan
 # Register your models here.
 
-@admin.register(BasicPlan)
+@admin.register(PricePlan)
 class BasicPlan(admin.ModelAdmin):
-    list_display = ["pk", 'payment_time', 'payer', "plan_cost"]
-
-@admin.register(ProPlan)
-class ProPlan(admin.ModelAdmin):
-    list_display = ["pk", 'payment_time', 'payer', "plan_cost"]
-
-@admin.register(VipPlan)
-class VipPlan(admin.ModelAdmin):
-    list_display = ["pk", 'payment_time', 'payer', "plan_cost"]
+    list_display = ["pk", 'payment_time', 'payer', 'plan_type']
