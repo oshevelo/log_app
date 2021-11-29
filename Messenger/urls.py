@@ -10,5 +10,4 @@ urlpatterns = [
     path('user/', views.UserList.as_view(), name='UserList'),
     path('group-chat/', views.GroupChatList.as_view(), name='GroupChatList'),
     path('group-chat/<int:group_chat_id>/', views.GroupChatDetails.as_view(), name='GroupChatDetails')
-
 ]

@@ -5,7 +5,7 @@ Ubuntu:
     sudo apt-get update
     sudo apt-get -y install python3-pip
     sudo apt-get install --reinstall libpq-dev
-    pip install psycopg2
+    pip3 install psycopg2
 -Install Django:
     sudo pip3 install django==3.2
 -Package install:
@@ -17,8 +17,12 @@ Ubuntu:
     python3 manage.py migrate jet
     python3 manage.py createsuperuser (Ex: max max@max.com 1106)
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Start local server:
+    export PATH=$PATH:$HOME/Downloads/redis-stable/src
+    redis-server --port 6379
     python3 manage.py runserver
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Start test:
     pytest test_main.py -s
@@ -26,13 +30,18 @@ Start test:
 JET:
     https://pypi.org/project/django-3-jet/
     Doc: https://docs.djangoproject.com/en/3.2/intro/tutorial07/
+
+    pip3 install https://github.com/Barukimang/django-jet/archive/dev.zip
+    or
+    pip3 install django-3-jet==1.0.8
+
     python3 manage.py migrate jet
 
 Rest:
     Install 'rest_framework':
-        pip install djangorestframework
-        pip install markdown       # Markdown support for the browsable API.
-        pip install django-filter  # Filtering support
+        pip3 install djangorestframework
+        pip3 install markdown       # Markdown support for the browsable API.
+        pip3 install django-filter  # Filtering support
 
         http://127.0.0.1:8000/polls/question/
 
@@ -45,7 +54,7 @@ Rest:
 
 Postgres:
     sudo apt-get install --reinstall libpq-dev
-    pip install psycopg2
+    pip3 install psycopg2
 
     DB console:
         sudo -u postgres psql
@@ -62,4 +71,17 @@ Add avatar:
     python3 -m pip install Pillow
 
 Add django_filters:
-    pip install django-filter
+    pip3 install django-filter
+
+Add WS:
+    pip3 install channels
+    pip3 install channels-redis
+
+    Add redis
+    wget http://download.redis.io/redis-stable.tar.gz
+    tar xvzf redis-stable.tar.gz
+    cd redis-stable
+    make
+
+    export PATH=$PATH:$HOME/Downloads/redis-stable/src
+    redis-server --port 6379
