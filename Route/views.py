@@ -1,6 +1,8 @@
-import generics as generics
-from django.shortcuts import render
+
+# from django.shortcuts import render
+
 from rest_framework import pagination
+from rest_framework import generics
 
 from .models import Route
 from .serializers import RouteListSerializer, RouteDetailsSerializer
