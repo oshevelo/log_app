@@ -40,13 +40,10 @@ class GroupChatDetails(generics.RetrieveUpdateDestroyAPIView):
 
 
     def put(self, request, *args, **kwargs):
-        context = {'request': request}
-        serializer = GroupChatDetailsSerializer(data=request.data, context=context)
-        if serializer.is_valid():
-            # serializer.update()
-            return Response({'success': 'True', 'message': 'GroupChat changed successfully'},
-                            status=200)
-        return Response(serializer.errors, status=404)
+        if request.user.id == request.data['owner']['id']:
+            return self.update(request, *args, **kwargs)
+        return Response({'error': 'This user can\'t edit this group'}, status=404)
+
 
 class UserList(generics.ListCreateAPIView): # Todo: Will move to Profile
     pagination_class = pagination.LimitOffsetPagination

@@ -4,6 +4,7 @@ let chatButton = $('#btn-send');
 let groupList = $('#group-list');
 let userList = $('#user-list');
 let messageList = $('#messages');
+let addGroup = $('#add-group');
 let editGroup = $('#edit-group');
 let groupListData = [];
 let socket = null;
@@ -33,27 +34,27 @@ function updateGroupList() {
         });
     })
 }
-// function updateUserList() {
-//     $.getJSON('user/', users => {
-//         userList.children('.user').remove();
-//         for (let i = 0; i < users.length; i++) {
-//             const user = users[i];
-//             if (user.id !== currentUserId) {
-//                  const userItem = `<a class="list-group-item user">
-//                     ${user['username']}
-//                     <button class="btn-plus pull-right add-user" id="${user.id}" title="Add User for Group">+</button>
-//                 </a>`;
-//                 $(userItem).appendTo('#user-list');
-//             }
-//         }
-//         $('.add-user').click(() => {
-//             userList.children('.active').removeClass('active');
-//             let selected = event.target;
-//             $(selected).addClass('active');
-//             setCurrentRecipient(selected);
-//         });
-//     });
-// }
+function updateUserList() {
+    $.getJSON('user/', users => {
+        userList.children('.user').remove();
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];
+            if (user.id !== currentUserId) {
+                 const userItem = `<a class="list-group-item user">
+                    ${user['username']}
+                    <button class="btn-plus pull-right add-user" id="${user.id}" title="Add User for Group">+</button>
+                </a>`;
+                $(userItem).appendTo('#user-list');
+            }
+        }
+        $('.add-user').click(() => {
+            userList.children('.active').removeClass('active');
+            let selected = event.target;
+            $(selected).addClass('active');
+            setCurrentRecipient(selected);
+        });
+    });
+}
 
 function drawMessage(message) {
     let position = 'left';
@@ -93,11 +94,8 @@ function getConversation(chat_group) {
 }
 
 function getMessageById(message) {
-    console.log(message);
-    // $.getJSON(`/message/${JSON.parse(message).group_id}/`, data => {
-        drawMessage(JSON.parse(message));
-        messageList.animate({scrollTop: messageList.prop('scrollHeight')});
-    // });
+    drawMessage(JSON.parse(message));
+    messageList.animate({scrollTop: messageList.prop('scrollHeight')});
 }
 
 function sendMessage(groupId, body) {
@@ -108,12 +106,6 @@ function sendMessage(groupId, body) {
         recipient: {'id': recipientId},
         body: body
     }));
-
-    // $.post('/message/', {
-    //     recipient: {'id': recipientId},
-    //     body: body
-    // })
-    // .fail(() => alert('Error! Check console!'));
 }
 
 function enableInput() {
