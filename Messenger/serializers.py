@@ -83,9 +83,7 @@ class GroupChatDetailsSerializer(ValidateUser, serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'owner', 'participants',  'image')
 
     def validate_owner(self, data):
-        print(222, self.validate_user(data, 'owner') and (data.get('id') == self.context['request'].user.id))
-        return self.validate_user(data, 'owner') and (data.get('id') == self.context['request'].user.id)
-        # return self.validate_user(data, 'owner')
+        return self.validate_user(data, 'owner')
 
     def validate_participants(self, data):
         if len(data) < 2:
