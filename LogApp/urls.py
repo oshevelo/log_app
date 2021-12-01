@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('demo/', include('demo.urls')),
     path('messenger/', include('Messenger.urls')),
-    path('pays/' ,include('PaymentSystem.urls')),
-    path('plans/' ,include('PricingPlans.urls')),
+    path('pays/', include('PaymentSystem.urls')),
+    path('plans/', include('PricingPlans.urls')),
+    path('route/', include('Route.urls')),
 ]
