@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'Route',
     'demo',
     'Messenger.apps.MessengerConfig',
-    'PaymentSystem',
 ]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 MIDDLEWARE = [

@@ -1,29 +1,41 @@
+from decimal import Decimal
+
 from django.http import HttpResponse
-from .models import BasicPlan, ProPlan, VipPlan
-from .serializers import BasicPlanListSerializer, ProPlanListSerializer, VipPlanListSerializer
+from django.template import loader
+from django.template.loader import get_template
+
+from .models import PricePlan
+from .serializers import BasicPlanListSerializer, BasicDetailSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.views import APIView
+from django.views.generic import FormView
+from django.shortcuts import render
 from paypal.standard.forms import PayPalPaymentsForm
+from paypal.pro.views import PayPalPro
+from django.conf import settings
 
-class BasicPlanList(generics.ListCreateAPIView):
-    queryset = BasicPlan.objects.all()
+class PricePlanList(generics.ListCreateAPIView):
+    queryset = PricePlan.objects.all()
     serializer_class = BasicPlanListSerializer
+    def get_queryset(self):
+        if not self.request.user.is_superuser:
+            return PricePlan.objects.filter(payer=self.request.user)
+        return PricePlan.objects.all()
+
+class PayDetails(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BasicDetailSerializer
+
+    def get_object(self):
+        return get_object_or_404(PricePlan, pk=self.kwargs.get('pay_id'))
 
 
-class ProPlanList(generics.ListCreateAPIView):
-    queryset = ProPlan.objects.all()
-    serializer_class = ProPlanListSerializer
 
-class VipPlanList(generics.ListCreateAPIView):
-    queryset = VipPlan.objects.all()
-    serializer_class = VipPlanListSerializer
+def BasePlan(request):
+    return render(request, "PricingPlans/BasePlan.html")
 
+def ProPlan(request):
+    return render(request, "PricingPlans/ProPlan.html")
 
-
-
-# class PayDetails(generics.RetrieveUpdateDestroyAPIView):
-#     serializer_class = BasicDetailsSerializer
-#
-#     def get_object(self):
-#         return get_object_or_404(BasicPlan, pk=self.kwargs.get('pk'))
+def VipPlan(request):
+    return render(request, "PricingPlans/VipPlan.html")

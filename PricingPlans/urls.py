@@ -1,12 +1,15 @@
-from django.urls import path
+from django.conf.urls import url
+from django.urls import path, include
+from django.views.generic import TemplateView
 
 from .import views
 
-urlpatterns = [
-    # ex: /polls/
-    path('basic/', views.BasicPlanList.as_view(), name='basic'),
-    path('pro/', views.ProPlanList.as_view(), name='pro'),
-    path('vip/', views.VipPlanList.as_view(), name='vip'),
 
-    # path('<int:pk>/', views.PayDetails.as_view(), name='PaysDetails')
+urlpatterns = [
+
+    path('all/', views.PricePlanList.as_view(), name='all'),
+    path('<int:pay_id>/', views.PayDetails.as_view(), name='PayDetails'),
+    path('BasePay/' ,views.BasePlan),
+    path('ProPay/' ,views.ProPlan),
+    path('VipPay/' ,views.VipPlan),
 ]
