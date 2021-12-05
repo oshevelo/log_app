@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from rest_framework.response import Response
 from rest_framework import generics, pagination
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import MessageListSerializer, GroupChatListSerializer, UserNestedSerializer, \
     GroupChatDetailsSerializer
@@ -31,9 +33,16 @@ class GroupChatList(generics.ListCreateAPIView):
 
 class GroupChatDetails(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupChatDetailsSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return get_object_or_404(GroupChat, pk=self.kwargs.get('group_chat_id'))
+
+
+    def put(self, request, *args, **kwargs):
+        if request.user.id == request.data['owner']['id']:
+            return self.update(request, *args, **kwargs)
+        return Response({'error': 'This user can\'t edit this group'}, status=404)
 
 
 class UserList(generics.ListCreateAPIView): # Todo: Will move to Profile

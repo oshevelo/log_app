@@ -24,6 +24,6 @@ class QuestionDetails(generics.RetrieveUpdateDestroyAPIView):
     
     def get_object(self):
         if not self.request.user.is_superuser:
-            get_object_or_404(Question, pk=self.kwargs.get('question_id'), respondent=self.request.user)
+            return get_object_or_404(Question, pk=self.kwargs.get('question_id'), respondent=self.request.user)
         return get_object_or_404(Question, pk=self.kwargs.get('question_id'))
         

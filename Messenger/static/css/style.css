@@ -122,3 +122,14 @@ body {
 .btn-plus {
     cursor: pointer;
 }
+
+.panel-heading {
+    position: relative;
+    height: 39px;
+}
+
+.btn-edit {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+}
