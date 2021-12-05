@@ -85,3 +85,45 @@ Add WS:
 
     export PATH=$PATH:$HOME/Downloads/redis-stable/src
     redis-server --port 6379
+
+!!!! nginx + supervisor + uwsgi + django !!!!
+Add uWSGI:
+    source ~/HillelProjects/log_app/env/bin/activate
+    pip3 install uWSGI
+    pip3 freeze|grep -i uwsgi >> requirements.txt
+
+Add Nginx:
+    sudo apt-get install nginx
+
+    для того, чтобы Nginx смог работать с файлом uWSGI-сокета добавим его в группу вашего проекта,
+     в Ubuntu это можно сделать так:
+    sudo groupadd nginx_group
+    sudo usermod -a -G nginx_group www-data
+
+Add Supervisor:
+    sudo apt-get install supervisor
+    sudo service supervisor start
+   * sudo service supervisor stop
+
+Start nginx + supervisor+uwsgi+django:
+    *maxim1106 - <username>
+    mkdir -p /home/maxim1106/HillelProjects/log_app/logs
+
+    uWSGI:
+        sudo ln -s /home/maxim1106/HillelProjects/log_app/supervisor/production.conf /etc/supervisor/conf.d/log_app.conf
+        sudo supervisorctl update
+        sudo supervisorctl status
+
+        * sudo service supervisord stop
+        * sudo supervisord -c /etc/supervisor/supervisord.conf
+
+        * sudo service supervisord reload
+        * sudo supervisorctl restart all
+
+    Nginx:
+        sudo ln -s /home/maxim1106/HillelProjects/log_app/nginx/production.conf /etc/nginx/sites-enabled/log_app.conf
+        sudo nginx -t
+        sudo nginx -s reload
+
+        * ps -ef | grep nginx
+        * service nginx start

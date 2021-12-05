@@ -32,7 +32,7 @@ Try it now and get support through every stage of the job:
 - [ ] Orders
 - [ ] Scheduler
 - [ ] Notifications
-- [ ] Messenger (chat)
+- [x] Messenger (chat)
 
 
 *For additional info please see commands.txt
