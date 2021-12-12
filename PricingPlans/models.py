@@ -3,12 +3,19 @@ from django.contrib.auth.models import User
 from django.db import models
 import django.utils.timezone
 
+
+class PricePlanTypes(models.Model):
+    base = 9
+    pro = 25
+    vip = 49
+
+
 class PricePlan(models.Model):
 
     plans = [
-        ("BasePlan", 'Base Plan'),
-        ("ProPlan", 'Pro Plan'),
-        ("VipPlan", 'Vip Plan'),
+        (PricePlanTypes.base, 'Base Plan'),
+        (PricePlanTypes.pro, 'Pro Plan'),
+        (PricePlanTypes.vip, 'Vip Plan'),
     ]
     payment_time = models.DateTimeField('payment time', default=django.utils.timezone.now())
     payer = models.ForeignKey(User, on_delete=models.RESTRICT)

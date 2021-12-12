@@ -1,12 +1,17 @@
 from decimal import Decimal
 
-from django.http import HttpResponse
+import requests
+from django.views import View
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.template.loader import get_template
+from django.views import View
+from requests import post
 
-from .models import PricePlan
+from .forms import PricePlanUserForm
+from .models import PricePlan, PricePlanTypes
 from .serializers import BasicPlanListSerializer, BasicDetailSerializer
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.views.generic import FormView
@@ -30,12 +35,27 @@ class PayDetails(generics.RetrieveUpdateDestroyAPIView):
         return get_object_or_404(PricePlan, pk=self.kwargs.get('pay_id'))
 
 
+def DetectPlan(request):
+    PlanChoice = 9
+    if PricePlan.plan_type == 'BasePlan':
+        PlanChoice = PricePlanTypes.base
+    elif PricePlan.plan_type == 'ProPlan':
+        PlanChoice = PricePlanTypes.pro
+    elif PricePlan.plan_type == 'VipPlan':
+        PlanChoice = PricePlanTypes.vip
+    return render(request, "PricingPlans/BasicPageForAllPlans.html", {"SelectedPlan": PlanChoice})
 
-def BasePlan(request):
-    return render(request, "PricingPlans/BasePlan.html")
+    # if PricePlan.plan_type == 'BasePlan'
+    # if PricePlan.plan_type == PricePlan.PricePlanTypes.base
 
-def ProPlan(request):
-    return render(request, "PricingPlans/ProPlan.html")
+def ChoicenPlan(request):
+    return render(request, "PricingPlans/BasicPageForAllPlans.html")
 
-def VipPlan(request):
-    return render(request, "PricingPlans/VipPlan.html")
+def testy(request):
+    if request.method == 'POST':
+        form = PricePlanUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('Pay/')
+    form = PricePlanUserForm()
+    return render(request,'PricingPlans/confirmation.html', context={'form': form})
