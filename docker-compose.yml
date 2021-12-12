@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  server:
+    build: .
+    image: cc-dev-log-app-service:1.0.0
+
+    ports:
+      - 3000:80
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8002:8080
+
+volumes:
+  db-data:
