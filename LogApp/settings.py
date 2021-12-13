@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'Route',
     'demo',
     'Messenger.apps.MessengerConfig',
+    'paypal.standard',
+    'paypal.pro',
 ]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 MIDDLEWARE = [
