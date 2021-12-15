@@ -19,4 +19,4 @@ class BasicDetailSerializer(serializers.ModelSerializer):
     payer = UserNestedPays(read_only=True)
     class Meta:
         model = PricePlan
-        fields = "__all__"
+        fields = ["pk", 'payment_time', 'payer', "plan_type"]
