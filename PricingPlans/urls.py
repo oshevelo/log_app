@@ -11,6 +11,6 @@ urlpatterns = [
 
     path('all/', views.PricePlanList.as_view(), name='all'),
     path('<int:pay_id>/', views.PayDetails.as_view(), name='PayDetails'),
-    path('Pay/' ,views.ChoicenPlan),
+    path('Pay/' ,views.choicen_plan),
     path('', views.testy, name="testy")
 ]

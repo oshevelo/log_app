@@ -4,13 +4,11 @@ from django.db import models
 import django.utils.timezone
 
 
-class PricePlanTypes(models.Model):
-    base = 9
-    pro = 25
-    vip = 49
-
-
 class PricePlan(models.Model):
+    class PricePlanTypes(models.Model):
+        base = "BasePlan"
+        pro = "ProPlan"
+        vip = "VipPlan"
 
     plans = [
         (PricePlanTypes.base, 'Base Plan'),

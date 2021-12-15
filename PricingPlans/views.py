@@ -1,5 +1,4 @@
 from decimal import Decimal
-
 import requests
 from django.views import View
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,9 +6,8 @@ from django.template import loader
 from django.template.loader import get_template
 from django.views import View
 from requests import post
-
 from .forms import PricePlanUserForm
-from .models import PricePlan, PricePlanTypes
+from .models import PricePlan
 from .serializers import BasicPlanListSerializer, BasicDetailSerializer
 from django.shortcuts import get_object_or_404, redirect
 from rest_framework import generics
@@ -29,26 +27,12 @@ class PricePlanList(generics.ListCreateAPIView):
         return PricePlan.objects.all()
 
 class PayDetails(generics.RetrieveUpdateDestroyAPIView):
+
     serializer_class = BasicDetailSerializer
-
     def get_object(self):
-        return get_object_or_404(PricePlan, pk=self.kwargs.get('pay_id'))
+        return get_object_or_404(PricePlan.objects.filter(payer=self.request.user), pk=self.kwargs.get('pay_id'))
 
-
-def DetectPlan(request):
-    PlanChoice = 9
-    if PricePlan.plan_type == 'BasePlan':
-        PlanChoice = PricePlanTypes.base
-    elif PricePlan.plan_type == 'ProPlan':
-        PlanChoice = PricePlanTypes.pro
-    elif PricePlan.plan_type == 'VipPlan':
-        PlanChoice = PricePlanTypes.vip
-    return render(request, "PricingPlans/BasicPageForAllPlans.html", {"SelectedPlan": PlanChoice})
-
-    # if PricePlan.plan_type == 'BasePlan'
-    # if PricePlan.plan_type == PricePlan.PricePlanTypes.base
-
-def ChoicenPlan(request):
+def choicen_plan(request):#тут проходит оплата
     return render(request, "PricingPlans/BasicPageForAllPlans.html")
 
 def testy(request):
