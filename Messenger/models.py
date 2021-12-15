@@ -7,7 +7,7 @@ class GroupChat(models.Model):
     description = models.TextField('description', max_length=2000, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_chats')
     participants = models.ManyToManyField(User)
-    image = models.ImageField(upload_to='images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png',
+    image = models.ImageField(upload_to='public/images/group_avatar/%Y/%m/%d/', default='images/group_avatar/default.png',
                               blank=True, null=True)
 
     class Meta:
