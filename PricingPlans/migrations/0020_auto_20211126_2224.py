@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('payment_time', models.DateTimeField(default=datetime.datetime(2021, 11, 26, 20, 24, 55, 118770, tzinfo=utc), verbose_name='payment time')),
                 ('plan_type', models.CharField(choices=[(9, 'Base Plan'), (25, 'Pro Plan'), (49, 'Vip Plan')], default=None, max_length=3)),
                 ('plan_cost', models.DecimalField(decimal_places=2, default=50, max_digits=5)),
-                ('payer', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to=settings.AUTH_USER_MODEL)),
+                ('payer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.RemoveField(
