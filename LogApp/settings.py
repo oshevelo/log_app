@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'Route',
     'demo',
     'Messenger.apps.MessengerConfig',
+    'Products.apps.ProductsConfig',
+    'Vehicles.apps.VehiclesConfig',
     'paypal.standard',
     'paypal.pro',
 ]

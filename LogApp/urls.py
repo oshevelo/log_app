@@ -22,5 +22,5 @@ urlpatterns = [
     path('demo/', include('demo.urls')),
     path('messenger/', include('Messenger.urls')),
     path('plans/' ,include('PricingPlans.urls')),
-
+    path('orders/', include('orders.urls')),
 ]
