@@ -4,7 +4,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Order, OrderItem
-from .permissions import IsOrderReceiver, IsSuperuser
+from .permissions import IsOrderReceiverOrSuperuser
 from .serializers import OrderListSerializer, OrderDetailSerializer, \
     OrderItemSerializer
 
@@ -26,7 +26,7 @@ class OrderList(generics.ListCreateAPIView):
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
 
     serializer_class = OrderDetailSerializer
-    permission_classes = [IsOrderReceiver | IsSuperuser]
+    permission_classes = [IsOrderReceiverOrSuperuser]
 
     def get_object(self):
         return get_object_or_404(Order, pk=self.kwargs.get('order_id'))
@@ -36,7 +36,7 @@ class OrderItemCreate(generics.CreateAPIView):
 
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-    permission_classes = [IsOrderReceiver | IsSuperuser]
+    permission_classes = [IsOrderReceiverOrSuperuser]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
