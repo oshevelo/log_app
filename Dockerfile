@@ -17,4 +17,4 @@ RUN python3 manage.py collectstatic
 
 COPY . /usr/src/app/
 
-CMD ["/entrypoint.sh"]
+CMD ["/home/maxim1106/HillelProjects/log_app/env/bin/uwsgi uwsgi/production.ini"]
