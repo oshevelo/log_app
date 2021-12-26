@@ -6,8 +6,6 @@ RUN apk update && apk upgrade && \
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app/
 
-RUN pip3 install django==3.2
-
 COPY requirements.txt /usr/src/app/
 RUN apk --no-cache add py3-pip python3-dev && \
     pip3 install -r requirements.txt && \

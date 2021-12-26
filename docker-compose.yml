@@ -7,12 +7,3 @@ services:
 
     ports:
       - 3000:80
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8002:8080
-
-volumes:
-  db-data:
