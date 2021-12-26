@@ -86,6 +86,10 @@ Add WS:
     export PATH=$PATH:$HOME/Downloads/redis-stable/src
     redis-server --port 6379
 
+Add static fields for Jet.js etc:
+    Add in settings: STATIC_ROOT = 'public/static/'
+    python3 manage.py collectstatic
+
 !!!! nginx + supervisor + uwsgi + django !!!!
 Add uWSGI:
     source ~/HillelProjects/log_app/env/bin/activate
@@ -126,4 +130,4 @@ Start nginx + supervisor+uwsgi+django:
         sudo nginx -s reload
 
         * ps -ef | grep nginx
-        * service nginx start
+        * sudo service nginx start
