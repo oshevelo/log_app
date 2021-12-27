@@ -1,6 +1,6 @@
 from django.utils import timezone
 from rest_framework import serializers
-from rest_framework.serializers import ValidationError, UniqueTogetherValidator
+from rest_framework.serializers import ValidationError
 
 from .models import Order, OrderItem
 
@@ -11,11 +11,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
         model = OrderItem
         fields = '__all__'
-        validators = [
-            UniqueTogetherValidator(
-                queryset=model.objects.all(), fields=['order', 'product']
-            )
-        ]
+
+    def validate(self, data):
+        """ Check products in order are not duplicating """
+        if OrderItem.objects.filter(
+            order=data.get('order'), product=data.get('product')
+        ).exists():
+            raise ValidationError('duplicating products in order')
+        return data
 
 
 class OrderItemNestedSerializer(serializers.ModelSerializer):
