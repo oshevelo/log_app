@@ -37,8 +37,3 @@ class OrderItemCreate(generics.CreateAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = [IsOrderReceiverOrSuperuser]
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({'order': self.kwargs.get('order_id')})
-        return context

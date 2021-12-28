@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.serializers import ValidationError
@@ -5,7 +6,22 @@ from rest_framework.serializers import ValidationError
 from .models import Order, OrderItem
 
 
+class OrderFromURL:
+
+    requires_context = True
+
+    def __call__(self, order_field):
+        order_id = order_field.context.get('request').parser_context.get(
+            'kwargs').get('order_id')
+        order = get_object_or_404(Order, pk=order_id)
+        return order
+
+
 class OrderItemSerializer(serializers.ModelSerializer):
+
+    order = serializers.PrimaryKeyRelatedField(
+        queryset=OrderItem.objects.all(), default = OrderFromURL()
+    )
 
     class Meta:
 
