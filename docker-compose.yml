@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  log_app:
+    build: .
+    volumes:
+      - /log_app:/log_app
+      - static_data:/home/log_app/static
+      - media_data:/home/log_app/public/images
+    expose:
+      - 443
+
+volumes:
+  static_data:
+  media_data:
