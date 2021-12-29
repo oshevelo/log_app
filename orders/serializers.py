@@ -11,8 +11,8 @@ class OrderFromURL:
     requires_context = True
 
     def __call__(self, order_field):
-        order_id = order_field.context.get('request').parser_context.get(
-            'kwargs').get('order_id')
+        request_obj = order_field.context.get('request')
+        order_id = request_obj.parser_context.get('kwargs').get('order_id')
         order = get_object_or_404(Order, pk=order_id)
         return order
 
