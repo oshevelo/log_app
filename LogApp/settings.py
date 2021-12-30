@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'jet',
     'rest_framework',
     'channels',
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +46,8 @@ INSTALLED_APPS = [
     'Route',
     'demo',
     'Messenger.apps.MessengerConfig',
+    'paypal.standard',
+    'paypal.pro',
 ]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 MIDDLEWARE = [

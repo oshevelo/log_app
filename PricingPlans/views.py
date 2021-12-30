@@ -1,12 +1,15 @@
 from decimal import Decimal
-
-from django.http import HttpResponse
+import requests
+from django.views import View
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.template.loader import get_template
-
+from django.views import View
+from requests import post
+from .forms import PricePlanUserForm
 from .models import PricePlan
 from .serializers import BasicPlanListSerializer, BasicDetailSerializer
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.views.generic import FormView
@@ -24,18 +27,19 @@ class PricePlanList(generics.ListCreateAPIView):
         return PricePlan.objects.all()
 
 class PayDetails(generics.RetrieveUpdateDestroyAPIView):
+
     serializer_class = BasicDetailSerializer
-
     def get_object(self):
-        return get_object_or_404(PricePlan, pk=self.kwargs.get('pay_id'))
+        return get_object_or_404(PricePlan.objects.filter(payer=self.request.user), pk=self.kwargs.get('pay_id'))
 
+def choicen_plan(request):#тут проходит оплата
+    return render(request, "PricingPlans/BasicPageForAllPlans.html")
 
-
-def BasePlan(request):
-    return render(request, "PricingPlans/BasePlan.html")
-
-def ProPlan(request):
-    return render(request, "PricingPlans/ProPlan.html")
-
-def VipPlan(request):
-    return render(request, "PricingPlans/VipPlan.html")
+def testy(request):
+    if request.method == 'POST':
+        form = PricePlanUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('Pay/')
+    form = PricePlanUserForm()
+    return render(request,'PricingPlans/confirmation.html', context={'form': form})
