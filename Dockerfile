@@ -15,4 +15,4 @@ RUN python3 manage.py collectstatic
 
 COPY . /usr/src/app/
 
-CMD ["/home/maxim1106/HillelProjects/log_app/env/bin/uwsgi uwsgi/production.ini"]
+CMD ["/home/max/HillelProjects/log_app/venv/bin/uwsgi uwsgi/production.ini"]

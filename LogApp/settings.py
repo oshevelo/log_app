@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'PricingPlans',
     'django_filters',
     'jet',
     'rest_framework',
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
     'Messenger.apps.MessengerConfig',
     'paypal.standard',
     'paypal.pro',
+    'PricingPlans',
 ]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 MIDDLEWARE = [
@@ -151,5 +151,9 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+PAYPAL_WPP_USER = ''
+PAYPAL_WPP_PASSWORD = ''
+PAYPAL_WPP_SIGNATURE = ''
 
 from .local_settings import *
