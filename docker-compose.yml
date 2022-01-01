@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  server:
+    build: .
+    image: cc-dev-log-app-service:1.0.0
+
+    ports:
+      - 3000:80

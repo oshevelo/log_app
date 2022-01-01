@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'PricingPlans',
     'django_filters',
     'jet',
     'rest_framework',
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
     'Messenger.apps.MessengerConfig',
     'paypal.standard',
     'paypal.pro',
+    'PricingPlans',
 ]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 MIDDLEWARE = [
@@ -134,6 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 REST_FRAMEWORK = {
@@ -150,5 +151,9 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+PAYPAL_WPP_USER = ''
+PAYPAL_WPP_PASSWORD = ''
+PAYPAL_WPP_SIGNATURE = ''
 
 from .local_settings import *
