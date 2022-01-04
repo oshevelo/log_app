@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import generics, pagination
 from rest_framework.permissions import IsAuthenticated
+from django_filters import rest_framework as filters
+from .filters import FilterMessage
 
 from .serializers import MessageListSerializer, GroupChatListSerializer, UserNestedSerializer, \
     GroupChatDetailsSerializer
@@ -12,6 +14,8 @@ from .models import Message, GroupChat
 class MessageList(generics.ListCreateAPIView):
     pagination_class = pagination.LimitOffsetPagination
     serializer_class = MessageListSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = FilterMessage
 
     def get_queryset(self):
         group_chat_id = self.request.query_params.get('group_chat_id')
@@ -37,7 +41,6 @@ class GroupChatDetails(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(GroupChat, pk=self.kwargs.get('group_chat_id'))
-
 
     def put(self, request, *args, **kwargs):
         if request.user.id == request.data['owner']['id']:
