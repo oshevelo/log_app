@@ -151,4 +151,8 @@ CHANNEL_LAYERS = {
     },
 }
 
+PAYPAL_WPP_USER = ''
+PAYPAL_WPP_PASSWORD = ''
+PAYPAL_WPP_SIGNATURE = ''
+
 from .local_settings import *
