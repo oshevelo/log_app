@@ -20,6 +20,7 @@ Ubuntu:
         sudo -u postgres psql
         create user test_admin with password 'admin1234';
         create database log_app owner test_admin;
+        *ALTER USER user CREATEDB; // for tests
 
 -DB:
     python3 manage.py makemigrations
@@ -40,6 +41,10 @@ Start local server:
 Start test:
     sudo apt install python-pytest
     pytest test_main.py -s
+    or
+    ./manage.py test
+    or
+    python3 manage.py test
 
 JET:
     https://pypi.org/project/django-3-jet/
