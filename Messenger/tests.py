@@ -5,6 +5,7 @@ from utils.helpers_for_tests import create_user, dump, login_user
 from Messenger.models import GroupChat, Message
 from datetime import datetime
 
+
 class GroupChatTest(TestCase):
 
     def setUp(self):
@@ -22,7 +23,7 @@ class GroupChatTest(TestCase):
     def test_empty_get(self):
         self.assertEqual(1, 1)
 
-    def test_unauth_restriction(self):
+    def test_unauthorised_restriction(self):
         response = self.c.get('/messenger/group-chat/')
         print(dir(status))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -71,7 +72,7 @@ class MessageTest(TestCase):
 
     def test_message_list(self):
         login_user(self.c, self.adminMax)
-        response = self.c.get(f'/messenger/message/?group_chat_id={self.message.id}')
+        response = self.c.get(f'/messenger/message/?group_chat_id={self.groupChat.id}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['sender']['id'], self.adminMax.id)
         self.assertEqual(response.data[0]['recipient']['id'], self.adminKoly.id)
