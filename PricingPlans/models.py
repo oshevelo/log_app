@@ -15,6 +15,6 @@ class PricePlan(models.Model):
         (PricePlanTypes.pro, 'Pro Plan'),
         (PricePlanTypes.vip, 'Vip Plan'),
     ]
-    payment_time = models.DateTimeField('payment time', default=django.utils.timezone.now())
+    payment_time = models.DateTimeField('payment time', default=django.utils.timezone.now)
     payer = models.ForeignKey(User, on_delete=models.CASCADE)
     plan_type = models.CharField(max_length=100, choices=plans)

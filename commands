@@ -4,12 +4,23 @@ Ubuntu:
 -Install pip3, DB:
     sudo apt-get update
     sudo apt-get -y install python3-pip
-    sudo apt-get install --reinstall libpq-dev
-    pip3 install psycopg2
--Install Django:
-    sudo pip3 install django==3.2
+
 -Package install:
+    source ~/HillelProjects/log_app/venv/bin/activate
+    pip3 install -U  --upgrade pip
     pip3 install -r requirements.txt
+    *pip3 freeze|grep -i psycopg2 >> requirements.txt
+
+-Postgres:
+    sudo apt-get install --reinstall libpq-dev
+    sudo apt install postgresql postgresql-contrib
+    pip3 install psycopg2
+
+    DB console:
+        sudo -u postgres psql
+        create user test_admin with password 'admin1234';
+        create database log_app owner test_admin;
+        *ALTER USER user CREATEDB; // for tests
 
 -DB:
     python3 manage.py makemigrations
@@ -19,13 +30,21 @@ Ubuntu:
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Start local server:
-    export PATH=$PATH:$HOME/Downloads/redis-stable/src
-    redis-server --port 6379
-    python3 manage.py runserver
+    Net console:
+        sudo apt install redis-server
+        export PATH=$PATH:$HOME/Downloads/redis-stable/src
+        redis-server --port 6379
+    Another console:
+        python3 manage.py runserver
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Start test:
+    sudo apt install python-pytest
     pytest test_main.py -s
+    or
+    ./manage.py test
+    or
+    python3 manage.py test
 
 JET:
     https://pypi.org/project/django-3-jet/
@@ -52,17 +71,6 @@ Rest:
         https://www.django-rest-framework.org/api-guide/generic-views/#generic-views
         https://www.django-rest-framework.org/tutorial/1-serialization/
 
-Postgres:
-    sudo apt-get install --reinstall libpq-dev
-    pip3 install psycopg2
-
-    DB console:
-        sudo -u postgres psql
-        create user test_admin with password 'admin1234';
-        create database log_app owner test_admin;
-
-    python3 manage.py migrate
-
 Additional commands:
     python3 manage.py startapp messenger - Add new module
 
@@ -86,9 +94,12 @@ Add WS:
     export PATH=$PATH:$HOME/Downloads/redis-stable/src
     redis-server --port 6379
 
+Add static fields for Jet.js etc:
+    Add in settings: STATIC_ROOT = 'public/static/'
+    python3 manage.py collectstatic
+
 !!!! nginx + supervisor + uwsgi + django !!!!
 Add uWSGI:
-    source ~/HillelProjects/log_app/env/bin/activate
     pip3 install uWSGI
     pip3 freeze|grep -i uwsgi >> requirements.txt
 
@@ -106,11 +117,11 @@ Add Supervisor:
    * sudo service supervisor stop
 
 Start nginx + supervisor+uwsgi+django:
-    *maxim1106 - <username>
-    mkdir -p /home/maxim1106/HillelProjects/log_app/logs
+    *max - <username>
+    mkdir -p /home/max/HillelProjects/log_app/logs
 
     uWSGI:
-        sudo ln -s /home/maxim1106/HillelProjects/log_app/supervisor/production.conf /etc/supervisor/conf.d/log_app.conf
+        sudo ln -s /home/max/HillelProjects/log_app/supervisor/production.conf /etc/supervisor/conf.d/log_app.conf
         sudo supervisorctl update
         sudo supervisorctl status
 
@@ -121,9 +132,9 @@ Start nginx + supervisor+uwsgi+django:
         * sudo supervisorctl restart all
 
     Nginx:
-        sudo ln -s /home/maxim1106/HillelProjects/log_app/nginx/production.conf /etc/nginx/sites-enabled/log_app.conf
+        sudo ln -s /home/max/HillelProjects/log_app/nginx/production.conf /etc/nginx/sites-enabled/log_app.conf
         sudo nginx -t
         sudo nginx -s reload
 
         * ps -ef | grep nginx
-        * service nginx start
+        * sudo service nginx start

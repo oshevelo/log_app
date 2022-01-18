@@ -2,8 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-class Notification(models.Model):
 
+class Notification(models.Model):
     EMAIL_NTF = "email"
     SMS_NTF = "sms"
     NTF_TYPE = [
